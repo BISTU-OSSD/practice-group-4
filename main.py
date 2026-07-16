@@ -80,3 +80,4 @@ if __name__ == "__main__":
     # 测试 4：中文字符级别
     sim_cn_char = jaccard_similarity(s3, s4, level="char")
     print(f"中文字符级别 ('{s3}' vs '{s4}'): {sim_cn_char:.4f}")
+##准备发布第一个版本
