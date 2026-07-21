@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 图书管理系统
 
 > 课程实践项目：开源软件开发
@@ -73,3 +74,6 @@ python app.py
 ## 许可证
 
 MIT License
+=======
+# practice-group-4
+>>>>>>> 99e171f82627d86c9dedee884f6b90a4feb77ce9
