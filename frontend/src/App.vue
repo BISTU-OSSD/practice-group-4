@@ -50,7 +50,7 @@
 
               <el-table :data="books" border stripe style="width:100%;">
                 <el-table-column prop="id" label="ID" width="60"></el-table-column>
-                <el-table-column prop="name" label="书名" min-width="150"></el-table-column>
+ dev
                 <el-table-column prop="author" label="作者" width="120"></el-table-column>
                 <el-table-column prop="isbn" label="ISBN" width="150"></el-table-column>
                 <el-table-column label="状态" width="100">
@@ -89,17 +89,12 @@
               </div>
               <el-table :data="borrowRecords" border stripe>
                 <el-table-column prop="book_name" label="书名" min-width="150"></el-table-column>
-                <el-table-column prop="user_name" label="借阅人" width="100"></el-table-column>
-                <el-table-column prop="borrow_time" label="借书时间" width="180"></el-table-column>
-                <el-table-column prop="return_time" label="还书时间" width="180">
-                  <template slot-scope="scope">
-                    {{ scope.row.return_time || '未归还' }}
+ dev
                   </template>
                 </el-table-column>
                 <el-table-column label="状态" width="100">
                   <template slot-scope="scope">
-                    <el-tag :type="scope.row.status === 1 ? 'danger' : 'success'">
-                      {{ scope.row.statusText }}
+ dev
                     </el-tag>
                   </template>
                 </el-table-column>
@@ -130,9 +125,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer">
-                <el-button @click="dialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="submitBook">确定</el-button>
-            </span>
+ dev
     </el-dialog>
 
     <!-- 借书弹窗 -->
@@ -143,9 +136,7 @@
         <el-input v-model="borrowUserId" placeholder="请输入学号（如2024001）" style="width:200px;"></el-input>
       </div>
       <span slot="footer">
-                <el-button @click="borrowDialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="confirmBorrow">确认借书</el-button>
-            </span>
+ dev
     </el-dialog>
   </div>
 </template>
@@ -174,35 +165,12 @@ export default {
 
       borrowDialogVisible: false,
       currentBook: null,
-      borrowUserId: ''
+ dev
     }
   },
 
   mounted() {
-    // 先用假数据，等D后端好了再切到真实接口
-    this.loadMockBooks()
-    // this.loadBooks()  // 等D后端好了，把这行取消注释，注释掉上面那行
-  },
-
-  methods: {
-    // ====== 假数据（等D后端好了就删掉这个函数） ======
-    loadMockBooks() {
-      this.books = [
-        { id: 1, name: '三体', author: '刘慈欣', isbn: '978-7-5366-9293-0', status: 1, statusText: '在库' },
-        { id: 2, name: '活着', author: '余华', isbn: '978-7-5063-3368-5', status: 0, statusText: '已借出' },
-        { id: 3, name: '百年孤独', author: '马尔克斯', isbn: '978-7-5442-5500-3', status: 1, statusText: '在库' },
-        { id: 4, name: '人类简史', author: '尤瓦尔·赫拉利', isbn: '978-7-5086-5847-8', status: 1, statusText: '在库' }
-      ]
-    },
-
-    // ====== 图书管理（真实接口，等D后端好了再用） ======
-    async loadBooks() {
-      try {
-        const res = await this.$http.get('/books/', {
-          params: { keyword: this.keyword }
-        })
-        if (res.data.code === 200) {
-          this.books = res.data.data
+ dev
         }
       } catch (e) {
         this.$message.error('加载图书失败，请检查后端服务')
@@ -219,7 +187,7 @@ export default {
     openEditDialog(row) {
       this.isEdit = true
       this.dialogTitle = '编辑图书'
-      this.bookForm = { ...row }
+ dev
       this.dialogVisible = true
     },
 
@@ -229,44 +197,7 @@ export default {
         return
       }
 
-      // 用假数据模拟（等D后端好了再换成真实接口）
-      if (this.isEdit) {
-        const index = this.books.findIndex(b => b.id === this.bookForm.id)
-        if (index !== -1) {
-          this.books[index] = { ...this.bookForm }
-          this.$message.success('修改成功')
-        }
-      } else {
-        const newBook = {
-          ...this.bookForm,
-          id: Date.now(),
-          statusText: this.bookForm.status === 1 ? '在库' : '已借出'
-        }
-        this.books.push(newBook)
-        this.$message.success('添加成功')
-      }
-      this.dialogVisible = false
-
-      // 真实接口（等D后端好了，把上面注释掉，放开下面这段）
-      /*
-      try {
-          let res
-          if (this.isEdit) {
-              res = await this.$http.put(`/books/${this.bookForm.id}`, this.bookForm)
-          } else {
-              res = await this.$http.post('/books/', this.bookForm)
-          }
-          if (res.data.code === 200) {
-              this.$message.success(res.data.message)
-              this.dialogVisible = false
-              this.loadBooks()
-          } else {
-              this.$message.error(res.data.message)
-          }
-      } catch (e) {
-          this.$message.error('操作失败')
-      }
-      */
+ dev
     },
 
     async handleDelete(id) {
@@ -275,25 +206,7 @@ export default {
       }).catch(() => {})
       if (!confirm) return
 
-      // 假数据模拟
-      this.books = this.books.filter(b => b.id !== id)
-      this.$message.success('删除成功')
-
-      // 真实接口（等D后端好了再放开）
-      /*
-      try {
-          const res = await this.$http.delete(`/books/${id}`)
-          if (res.data.code === 200) {
-              this.$message.success('删除成功')
-              this.loadBooks()
-          }
-      } catch (e) {
-          this.$message.error('删除失败')
-      }
-      */
-    },
-
-    // ====== 借阅管理 ======
+ dev
     handleBorrow(row) {
       if (row.status === 1) {
         this.currentBook = row
@@ -310,58 +223,7 @@ export default {
         return
       }
 
-      // 假数据模拟
-      const book = this.books.find(b => b.id === this.currentBook.id)
-      if (book) {
-        book.status = 0
-        book.statusText = '已借出'
-        this.$message.success('借书成功')
-        this.borrowDialogVisible = false
-      }
-
-      // 真实接口（等D后端好了再放开）
-      /*
-      try {
-          const res = await this.$http.post('/borrows/', {
-              book_id: this.currentBook.id,
-              user_id: parseInt(this.borrowUserId)
-          })
-          if (res.data.code === 200) {
-              this.$message.success('借书成功')
-              this.borrowDialogVisible = false
-              this.loadBooks()
-          } else {
-              this.$message.error(res.data.message)
-          }
-      } catch (e) {
-          this.$message.error('借书失败')
-      }
-      */
-    },
-
-    async confirmReturn(bookId) {
-      // 假数据模拟
-      const book = this.books.find(b => b.id === bookId)
-      if (book) {
-        book.status = 1
-        book.statusText = '在库'
-        this.$message.success('还书成功')
-      }
-
-      // 真实接口（等D后端好了再放开）
-      /*
-      try {
-          const res = await this.$http.put('/borrows/return', { book_id: bookId })
-          if (res.data.code === 200) {
-              this.$message.success('还书成功')
-              this.loadBooks()
-          } else {
-              this.$message.error(res.data.message)
-          }
-      } catch (e) {
-          this.$message.error('还书失败')
-      }
-      */
+ dev
     },
 
     async loadBorrowRecords() {
@@ -370,55 +232,7 @@ export default {
         return
       }
 
-      // 假数据模拟
-      this.borrowRecords = [
-        { book_name: '三体', user_name: '张三', borrow_time: '2024-01-01 10:00:00', return_time: '2024-01-15 10:00:00', status: 0, statusText: '已归还' },
-        { book_name: '活着', user_name: '张三', borrow_time: '2024-02-01 10:00:00', return_time: null, status: 1, statusText: '借出中' }
-      ]
-      if (this.borrowRecords.length === 0) {
-        this.$message.info('该用户暂无借阅记录')
-      }
-
-      // 真实接口（等D后端好了再放开）
-      /*
-      try {
-          const res = await this.$http.get(`/borrows/user/${this.searchUserId}`)
-          if (res.data.code === 200) {
-              this.borrowRecords = res.data.data
-              if (this.borrowRecords.length === 0) {
-                  this.$message.info('该用户暂无借阅记录')
-              }
-          }
-      } catch (e) {
-          this.$message.error('查询失败')
-      }
-      */
-    },
-
-    async showHistory(row) {
-      // 假数据模拟
-      this.$alert(
-          `张三 2024-01-01 10:00:00 已归还\n李四 2024-02-01 10:00:00 借出中`,
-          `${row.name} 的借阅历史`
-      )
-
-      // 真实接口（等D后端好了再放开）
-      /*
-      try {
-          const res = await this.$http.get(`/borrows/book/${row.id}`)
-          if (res.data.code === 200) {
-              const history = res.data.data
-              this.$alert(
-                  history.length > 0
-                      ? history.map(r => `${r.user_name} ${r.borrow_time} ${r.statusText}`).join('\n')
-                      : '暂无借阅记录',
-                  `${row.name} 的借阅历史`
-              )
-          }
-      } catch (e) {
-          this.$message.error('查询失败')
-      }
-      */
+ dev
     },
 
     handleMenuSelect(index) {

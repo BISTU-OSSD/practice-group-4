@@ -1,0 +1,11 @@
+-- 插入测试图书
+INSERT INTO books (book_name, author, publisher, isbn, category, total_count, available_count) 
+VALUES ('深入理解Java虚拟机', '周志明', '机械工业出版社', '9787111626468', '科技', 3, 3);
+
+-- 插入管理员用户
+INSERT INTO users (username, password, real_name, role) 
+VALUES ('admin', '123456', '管理员', 'admin');
+
+-- 插入普通用户
+INSERT INTO users (username, password, real_name, role) 
+VALUES ('zhangsan', '123456', '张三', 'user');
