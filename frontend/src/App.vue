@@ -50,7 +50,7 @@
 
               <el-table :data="books" border stripe style="width:100%;">
                 <el-table-column prop="id" label="ID" width="60"></el-table-column>
-                <el-table-column prop="bookName" label="书名" min-width="150"></el-table-column>
+ dev
                 <el-table-column prop="author" label="作者" width="120"></el-table-column>
                 <el-table-column prop="isbn" label="ISBN" width="150"></el-table-column>
                 <el-table-column label="状态" width="100">
@@ -89,17 +89,12 @@
               </div>
               <el-table :data="borrowRecords" border stripe>
                 <el-table-column prop="book_name" label="书名" min-width="150"></el-table-column>
-                <el-table-column prop="user_id" label="借阅人" width="100"></el-table-column>
-                <el-table-column prop="borrow_date" label="借书时间" width="180"></el-table-column>
-                <el-table-column prop="return_date" label="还书时间" width="180">
-                  <template slot-scope="scope">
-                    {{ scope.row.return_date || '未归还' }}
+ dev
                   </template>
                 </el-table-column>
                 <el-table-column label="状态" width="100">
                   <template slot-scope="scope">
-                    <el-tag :type="scope.row.status === 'borrowed' ? 'danger' : 'success'">
-                      {{ scope.row.status === 'borrowed' ? '借出中' : '已归还' }}
+ dev
                     </el-tag>
                   </template>
                 </el-table-column>
@@ -130,17 +125,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitBook">确定</el-button>
-      </span>
-    </el-dialog>
-
-    <!-- 借阅历史弹窗 -->
-    <el-dialog :title="historyDialogTitle" :visible.sync="historyDialogVisible" width="500px">
-      <div v-html="historyContent" style="line-height:1.8;font-size:14px;"></div>
-      <span slot="footer">
-        <el-button @click="historyDialogVisible = false">确定</el-button>
-      </span>
+ dev
     </el-dialog>
 
     <!-- 借书弹窗 -->
@@ -151,9 +136,7 @@
         <el-input v-model="borrowUserId" placeholder="请输入学号（如2024001）" style="width:200px;"></el-input>
       </div>
       <span slot="footer">
-        <el-button @click="borrowDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmBorrow">确认借书</el-button>
-      </span>
+ dev
     </el-dialog>
   </div>
 </template>
@@ -182,31 +165,12 @@ export default {
 
       borrowDialogVisible: false,
       currentBook: null,
-      borrowUserId: '',
-
-      historyDialogVisible: false,
-      historyDialogTitle: '',
-      historyContent: ''
+ dev
     }
   },
 
   mounted() {
-    this.loadBooks()
-  },
-
-  methods: {
-    async loadBooks() {
-      try {
-        const res = await this.$http.get('/books', {
-          params: { keyword: this.keyword }
-        })
-        if (res.data.code === 200) {
-          this.books = res.data.data.map(item => ({
-            ...item,
-            name: item.bookName,
-            status: item.availableCount > 0 ? 1 : 0,
-            statusText: item.availableCount > 0 ? '在库' : '已借出'
-          }))
+ dev
         }
       } catch (e) {
         this.$message.error('加载图书失败，请检查后端服务')
@@ -223,13 +187,7 @@ export default {
     openEditDialog(row) {
       this.isEdit = true
       this.dialogTitle = '编辑图书'
-      this.bookForm = {
-        id: row.id,
-        name: row.bookName || row.name,
-        author: row.author,
-        isbn: row.isbn,
-        status: row.availableCount > 0 ? 1 : 0
-      }
+ dev
       this.dialogVisible = true
     },
 
@@ -239,23 +197,7 @@ export default {
         return
       }
 
-      try {
-        let res
-        if (this.isEdit) {
-          res = await this.$http.put(`/books/${this.bookForm.id}`, this.bookForm)
-        } else {
-          res = await this.$http.post('/books', this.bookForm)
-        }
-        if (res.data.code === 200) {
-          this.$message.success(res.data.message)
-          this.dialogVisible = false
-          this.loadBooks()
-        } else {
-          this.$message.error(res.data.message)
-        }
-      } catch (e) {
-        this.$message.error('操作失败')
-      }
+ dev
     },
 
     async handleDelete(id) {
@@ -264,17 +206,7 @@ export default {
       }).catch(() => {})
       if (!confirm) return
 
-      try {
-        const res = await this.$http.delete(`/books/${id}`)
-        if (res.data.code === 200) {
-          this.$message.success('删除成功')
-          this.loadBooks()
-        }
-      } catch (e) {
-        this.$message.error('删除失败')
-      }
-    },
-
+ dev
     handleBorrow(row) {
       if (row.status === 1) {
         this.currentBook = row
@@ -291,35 +223,7 @@ export default {
         return
       }
 
-      try {
-        const res = await this.$http.post('/borrows', {
-          book_id: this.currentBook.id,
-          user_id: parseInt(this.borrowUserId)
-        })
-        if (res.data.code === 200) {
-          this.$message.success('借书成功')
-          this.borrowDialogVisible = false
-          this.loadBooks()
-        } else {
-          this.$message.error(res.data.message)
-        }
-      } catch (e) {
-        this.$message.error('借书失败')
-      }
-    },
-
-    async confirmReturn(bookId) {
-      try {
-        const res = await this.$http.put('/borrows/return', { book_id: bookId })
-        if (res.data.code === 200) {
-          this.$message.success('还书成功')
-          this.loadBooks()
-        } else {
-          this.$message.error(res.data.message)
-        }
-      } catch (e) {
-        this.$message.error('还书失败')
-      }
+ dev
     },
 
     async loadBorrowRecords() {
@@ -328,39 +232,7 @@ export default {
         return
       }
 
-      try {
-        const res = await this.$http.get(`/borrows/user/${this.searchUserId}`)
-        if (res.data.code === 200) {
-          this.borrowRecords = res.data.data
-          if (this.borrowRecords.length === 0) {
-            this.$message.info('该用户暂无借阅记录')
-          }
-        }
-      } catch (e) {
-        this.$message.error('查询失败')
-      }
-    },
-
-    async showHistory(row) {
-      try {
-        const res = await this.$http.get(`/borrows/book/${row.id}`)
-        if (res.data.code === 200) {
-          const history = res.data.data
-          if (history.length === 0) {
-            this.$message.info('暂无借阅记录')
-            return
-          }
-          const lines = history.map(r => {
-            const statusText = r.status === 'borrowed' ? '借出中' : '已归还'
-            return `用户${r.user_id} ${r.borrow_date} ${statusText}`
-          })
-          this.historyDialogTitle = `${row.name} 的借阅历史`
-          this.historyContent = lines.join('<br>')
-          this.historyDialogVisible = true
-        }
-      } catch (e) {
-        this.$message.error('查询失败')
-      }
+ dev
     },
 
     handleMenuSelect(index) {
